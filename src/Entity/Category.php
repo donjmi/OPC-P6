@@ -25,7 +25,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Trick::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="category")
      */
     private $tricks;
 
@@ -63,7 +63,6 @@ class Category
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks[] = $trick;
-            $trick->addCategory($this);
         }
 
         return $this;
@@ -73,9 +72,16 @@ class Category
     {
         if ($this->tricks->contains($trick)) {
             $this->tricks->removeElement($trick);
-            $trick->removeCategory($this);
         }
 
         return $this;
     }
+
+    /**
+    * toString
+    * @return string
+    */
+    // public function __toString(){
+    //    return $this->getId().'- '.$this->getName();
+    // }
 }
