@@ -51,7 +51,7 @@ class Trick
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      */
     private $category;
 
@@ -163,28 +163,14 @@ class Trick
         return $this;
     }
 
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategory(): Collection
+    public function getCategory(): String
     {
         return $this->category;
     }
 
-    public function addCategory(Category $category): self
+    public function setCategory(String $Category): self
     {
-        if (!$this->category->contains($category)) {
-            $this->category[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->category->contains($category)) {
-            $this->category->removeElement($category);
-        }
+        $this->category = $Category;
 
         return $this;
     }
@@ -218,5 +204,13 @@ class Trick
         }
 
         return $this;
+    }
+
+    /**
+    * toString
+    * @return string
+    */
+    public function __toString(){
+       return (string) $this->getId();
     }
 }
