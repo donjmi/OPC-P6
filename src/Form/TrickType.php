@@ -21,7 +21,9 @@ class TrickType extends AbstractType
             ->add('users')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'name'
+                'choice_label' => function($category){
+                    return ($category->getId().' - '.$category->getName());
+                }
             ])
         ;
     }

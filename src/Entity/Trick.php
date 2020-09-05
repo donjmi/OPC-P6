@@ -46,12 +46,12 @@ class Trick
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="tricks", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks", cascade={"persist"})
      */
     private $category;
 
@@ -63,7 +63,7 @@ class Trick
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->category = new ArrayCollection();
+        // $this->category = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
 
@@ -163,14 +163,14 @@ class Trick
         return $this;
     }
 
-    public function getCategory(): String
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(String $Category): self
+    public function setCategory(?Category $category): self
     {
-        $this->category = $Category;
+        $this->category = $category;
 
         return $this;
     }
