@@ -1,10 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trick{% endblock %}
+{% block title %}Trick show{% endblock %}
 
 {% block body %}
-    <h1>Trick</h1>
-
+<div class="container">
+	<section class="py-5">
+		<div class="container-fluid">
+			{# <div class"jumbotron"> #}
+			<div class="col">
+				<img src="{{ vich_uploader_asset(trick, 'mainImgFile') }}" alt="..." style="height: 400px; width: 1200px;"/>
+				<div class="row vertical-center">
+					<h1>{{ trick.name }}</h1>
+				</div>
+			</div>
+			{# </div> #}
+		</div>
+	</section>
     <table class="table">
         <tbody>
             <tr>
@@ -35,4 +46,6 @@
     <a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
 
     {{ include('trick/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
+
