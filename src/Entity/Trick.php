@@ -6,9 +6,13 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @Vich\Uploadable
  */
 class Trick
 {
@@ -18,6 +22,18 @@ class Trick
      * @ORM\Column(type="integer")
      */
     private $id;
+    
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $main_image;
+
+    /**
+     * @var File|null
+     * @vich\UploadableField(mapping="trick_main_image", fileNameProperty="main_image")
+     */
+    private $mainImgFile;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -63,7 +79,6 @@ class Trick
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        // $this->category = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
 
@@ -212,5 +227,46 @@ class Trick
     */
     public function __toString(){
        return (string) $this->getId();
+    }
+
+    /**
+     * @return  null|string
+     */ 
+    public function getMainImage(): ?string
+    {
+        return $this->main_image;
+    }
+
+    /**
+     * @param  null|string  $main_image
+     * @return  Trick
+     */ 
+    public function setMainImage(?string $main_image): Trick
+    {
+        $this->main_image = $main_image;
+
+        return $this;
+    }
+
+    /**
+     * @return  null|File
+     */ 
+    public function getMainImgFile(): ?File
+    {
+        return $this->mainImgFile;
+    }
+
+    /**
+     * @param null|File  $mainImgFile
+     * @return  Trick
+     */ 
+    public function setMainImgFile(?File $mainImgFile): Trick
+    {
+        $this->mainImgFile = $mainImgFile;
+
+        if ($this ->mainImgFile instanceof UploadedFile){
+            $this->updated_at = new \Datetime('NOW');
+        }
+        return $this;
     }
 }
