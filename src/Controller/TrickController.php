@@ -35,6 +35,10 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $date = new \DateTime();
+            $trick->setCreatedAt($date);
+            $trick->setUpdatedAt($date);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
