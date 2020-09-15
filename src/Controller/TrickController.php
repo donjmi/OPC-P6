@@ -55,7 +55,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/{id}", name="trick_show", methods={"GET"})
      */
-    public function show(Trick $trick): Response
+    public function show($id,Trick $trick): Response
     {
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
