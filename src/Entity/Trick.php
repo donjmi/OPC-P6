@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -76,10 +77,23 @@ class Trick
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     */
+    private $pictures;
+
+    /**
+	 * @Assert\All({
+	 *   @Assert\Image(mimeTypes={"image/png", "image/jpeg"})
+	 * })
+	 */
+    private $pictureFiles;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -267,6 +281,62 @@ class Trick
         if ($this ->mainImgFile instanceof UploadedFile){
             $this->updated_at = new \Datetime('NOW');
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getTrick() === $this) {
+                $picture->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return mixed
+     */ 
+    public function getPictureFiles()
+    {
+        return $this->pictureFiles;
+    }
+
+    /**
+     * @param mixed $pictureFiles
+     * @return Trick
+     */ 
+    public function setPictureFiles($pictureFiles): self
+    {
+        foreach ($pictureFiles as $pictureFile) {
+			$picture = new Picture();
+			$picture->setImageFile($pictureFile);
+			$this->addPicture($picture);
+		}
+        $this->pictureFiles = $pictureFiles;
         return $this;
     }
 }
