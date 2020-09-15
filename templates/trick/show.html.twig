@@ -1,11 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trick{% endblock %}
+{% block title %}Trick show{% endblock %}
 
 {% block body %}
-    <h1>Trick</h1>
+<div class="container">
+	<section class="py-5">    
+    {# Superposition simple #}
+    <div class=" overlay-image _b0 ">
+        <img class=" image _b1 " src="{{ vich_uploader_asset(trick, 'mainImgFile') }}" alt="{{ trick.name }}" />
+        <div class=" text _2 ">{{ trick.name }}</div>
+    </div>
+	</section>
+    
 
-    <table class="table">
+	{% block image %}
+		<section class="container">
+			{# <img src="{{ trick.image }}" alt="....."/> #}
+			block images + videos
+		</section>
+	{% endblock  image %}
+
+	{% block description %}
+        <section class="py">
+            <div class="container">
+            <p>{{ trick.description | raw }}</p>
+            </div>
+        </section>
+    {% endblock %}
+
+    <div class="btn-toolbar infos justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
+			<div class="btn-group mr-2" role="group">
+				<a href="#" class="btn btn-info">
+					Créée le
+					{{ trick.createdAt|date("d/m/Y") }}
+				</a>
+			</div>
+            <div class="btn-group mr-2" role="group">
+				<a href="#" class="btn btn-info">
+					{# {{ trick.category.name }} #}
+                    {{ render(controller('App\\Controller\\CategoryController::show', { 'id': trick.category } )) }}
+				</a>
+			</div>
+            {% if trick.createdAt is not same as(trick.updatedAt)  %}
+            <div class="btn-group mr-2" role="group">
+				<a href="#" class="btn btn-info"> modifié le
+					{{ trick.updatedAt|date("d/m/Y") }}
+                </a>
+			</div>
+            {% endif %}
+		</div>
+
+    {# <table class="table">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -17,7 +62,7 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ trick.description }}</td>
+                <td>{{ trick.description | raw }}</td>
             </tr>
             <tr>
                 <th>Created_at</th>
@@ -28,11 +73,13 @@
                 <td>{{ trick.updatedAt ? trick.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> #}
 
     <a href="{{ path('trick_index') }}">back to list</a>
 
     <a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
 
     {{ include('trick/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
+

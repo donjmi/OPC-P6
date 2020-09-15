@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,6 +25,13 @@ class TrickType extends AbstractType
                 'choice_label' => function($category){
                     return ($category->getId().' - '.$category->getName());
                 }
+            ])
+            ->add('mainImgFile', FileType::class, [
+                'required' => false
+            ])
+            ->add('pictureFiles', FileType::class, [
+                'required' => false,
+                'multiple' => true
             ])
         ;
     }
