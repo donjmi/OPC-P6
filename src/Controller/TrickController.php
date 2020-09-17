@@ -42,6 +42,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre figure a été créée avec succès !');
 
             return $this->redirectToRoute('trick_index');
         }
@@ -72,7 +73,7 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Votre figure a été modifiée avec succès !');
             return $this->redirectToRoute('trick_index');
         }
 
@@ -91,6 +92,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trick);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre figure a été supprimée');
         }
 
         return $this->redirectToRoute('trick_index');
