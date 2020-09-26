@@ -24,9 +24,7 @@ class Picture
 
     /**
      * @var File|null
-     * @Assert\Image(
-     *     mimeTypes="image/jpeg"
-     * )
+     * @Assert\Image(mimeTypes={"image/png", "image/jpeg"})
      * @Vich\UploadableField(mapping="trick_image", fileNameProperty="filename")
      */
     private $imageFile;
