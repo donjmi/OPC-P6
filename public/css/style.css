@@ -61,3 +61,13 @@
         transform: translate(-50%, -50%);
         width: 100%;
        }
+    
+.btnfloat1 {
+    position: absolute;
+    top: 2vh;
+    right: 2vh;
+}
+
+.xx {
+    background-position: left;
+}
